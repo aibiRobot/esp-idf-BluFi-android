@@ -8,19 +8,21 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: set up JDK 11
+    - uses: actions/checkout@v4  # 1. 检出你的代码
+
+    - name: Set up JDK 17        # 2. 【关键修改】将JDK从11改为17
       uses: actions/setup-java@v4
       with:
-        java-version: '11'
+        java-version: '17'       # 这里修改为17
         distribution: 'temurin'
-        cache: gradle
+        cache: gradle            # 启用Gradle缓存，加速后续构建
 
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+      run: chmod +x gradlew      # 3. 赋予gradlew脚本执行权限
+
+    - name: Build Debug APK with Gradle  # 4. 构建APK
+      run: ./gradlew assembleDebug       # 构建调试版APK，适用于真机测试
+      # 如果你需要发布版，则使用: ./gradlew assembleRelease
